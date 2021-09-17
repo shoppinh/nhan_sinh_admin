@@ -22,29 +22,30 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+    width: "60vw",
   },
   field: {
     marginBottom: "1rem",
   },
 }));
 
-const EditingServiceForm = (props) => {
+const EditingBenefitForm = (props) => {
   const classes = useStyles();
   const {
     isOpen,
     onCloseForm,
-    idService,
-    valuesService,
-    onEditingServiceSubmit,
-    onValuesServiceChange,
+    idBenefit,
+    valuesBenefit,
+    onEditingBenefitSubmit,
+    onValuesBenefitChange,
     onSuccess,
     onError,
   } = props;
-  const [details, setDetails] = React.useState(valuesService.details);
+  const [details, setDetails] = React.useState(valuesBenefit.details);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onEditingServiceSubmit(idService, { ...valuesService, details });
+    onEditingBenefitSubmit(idBenefit, { ...valuesBenefit, details });
   };
   const addDetailsItem = () => {
     const newDetails = [...details];
@@ -63,8 +64,8 @@ const EditingServiceForm = (props) => {
     setDetails(newDetails);
   };
   React.useEffect(() => {
-    setDetails(valuesService.details);
-  }, [valuesService.details]);
+    setDetails(valuesBenefit.details);
+  }, [valuesBenefit.details]);
   return (
     <React.Fragment>
       <Modal
@@ -81,52 +82,26 @@ const EditingServiceForm = (props) => {
       >
         <Fade in={isOpen}>
           <div className={classes.paper}>
-            <Container size="sm">
+            <Container maxWidth="md">
               <Typography variant="h5" style={{ marginBottom: "1rem" }}>
-                Chỉnh sửa dịch vụ: <b>{valuesService.title}</b>
+                Chỉnh sửa lợi ich: <b>{valuesBenefit.title}</b>
               </Typography>
 
               <form autoComplete="off" onSubmit={handleSubmit}>
                 <TextField
                   className={classes.field}
-                  label="Tên dịch vụ"
+                  label="Tiêu đề của lợi ích"
                   variant="outlined"
                   color="secondary"
                   fullWidth
                   type="text"
                   defaultValue={"value"}
-                  value={valuesService.title}
-                  onChange={onValuesServiceChange}
+                  value={valuesBenefit.title}
+                  onChange={onValuesBenefitChange}
                   required={true}
                   name="title"
                 />
-                <TextField
-                  className={classes.field}
-                  label="Giá"
-                  placeholder="VNĐ"
-                  variant="outlined"
-                  color="secondary"
-                  fullWidth
-                  type="number"
-                  defaultValue={0}
-                  value={valuesService.price}
-                  onChange={onValuesServiceChange}
-                  required={true}
-                  name="price"
-                />
-                <TextField
-                  className={classes.field}
-                  label="Số lượt tra cứu VIP"
-                  variant="outlined"
-                  color="secondary"
-                  fullWidth
-                  type="number"
-                  defaultValue={0}
-                  value={valuesService.quantity}
-                  onChange={onValuesServiceChange}
-                  required={true}
-                  name="quantity"
-                />
+
                 {details
                   ? details.map((item, index) => {
                       return (
@@ -135,13 +110,14 @@ const EditingServiceForm = (props) => {
                             <Grid item md={9}>
                               <TextField
                                 className={classes.field}
-                                label="Chi tiết dịch vụ"
+                                label="Chi tiết lợi ich"
                                 variant="outlined"
                                 color="secondary"
                                 fullWidth
                                 value={item}
                                 onChange={(e) => handleChangeDetail(index)(e)}
                                 required={true}
+                                name="details"
                               />
                             </Grid>
                             <Grid
@@ -180,7 +156,7 @@ const EditingServiceForm = (props) => {
                             onClick={addDetailsItem}
                             style={{ marginRight: "20px" }}
                           >
-                            Thêm mô tả
+                            Thêm lợi ích
                           </Button>
                         </Grid>
                       </Grid>
@@ -217,7 +193,7 @@ const EditingServiceForm = (props) => {
                   severity="success"
                   style={{ marginTop: "1rem", justifyContent: "center" }}
                 >
-                  Sửa dịch vụ thành công
+                  Sửa lợi ich thành công
                 </Alert>
               )}
               {onError && (
@@ -226,7 +202,7 @@ const EditingServiceForm = (props) => {
                   severity="error"
                   style={{ marginTop: "1rem", justifyContent: "center" }}
                 >
-                  Sửa dịch vụ thất bại
+                  Sửa lợi ich thất bại
                 </Alert>
               )}
             </Container>
@@ -237,4 +213,4 @@ const EditingServiceForm = (props) => {
   );
 };
 
-export default EditingServiceForm;
+export default EditingBenefitForm;

@@ -132,7 +132,6 @@ const AddingServiceForm = (props) => {
                                 value={item}
                                 onChange={(e) => handleChangeDetail(index)(e)}
                                 required={true}
-                                name="quantity"
                               />
                             </Grid>
                             <Grid
