@@ -28,7 +28,10 @@ const NumberMeaning = React.lazy(() =>
 );
 const Benefit = React.lazy(() => import("./features/Home/pages/Benefit"));
 const Payment = React.lazy(() => import("./features/Home/pages/Payment"));
-
+const SuccessStories = React.lazy(() =>
+  import("./features/Home/pages/SuccessStories")
+);
+const Welcome = React.lazy(() => import("./features/Home/pages/Welcome"));
 const theme = createTheme({
   palette: {
     primary: {
@@ -80,6 +83,12 @@ function App() {
               />
               <PrivateRoute exact path="/benefit" component={Benefit} />
               <PrivateRoute exact path="/payment" component={Payment} />
+              <PrivateRoute
+                exact
+                path="/success-stories"
+                component={SuccessStories}
+              />
+              <PrivateRoute exact path="/welcome" component={Welcome} />
             </Layout>
             {/* <PrivateRoute path='*' component={NotFound} /> */}
             <Redirect from="/" to="/sign-in" />
