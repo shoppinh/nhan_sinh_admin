@@ -13,9 +13,9 @@ const benefitApi = {
     const url = "/api/admin/service-info";
     return axiosAdmin.post(url, params);
   },
-  patchBenefit: (idBenefit, params) => {
+  putBenefit: (idBenefit, params) => {
     const url = `/api/admin/service-info/${idBenefit}`;
-    return axiosAdmin.patch(url, params);
+    return axiosAdmin.put(url, params);
   },
   deleteBenefit: (idBenefit, params) => {
     const url = `/api/admin/service-info/${idBenefit}`;

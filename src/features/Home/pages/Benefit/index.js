@@ -127,7 +127,7 @@ const Benefit = () => {
 
     const fetchEditNewBenefit = () => {
       benefitApi
-        .patchBenefit(id, data)
+        .putBenefit(id, data)
         .then(function (response) {
           setSuccess(true);
           setTimeout(() => {

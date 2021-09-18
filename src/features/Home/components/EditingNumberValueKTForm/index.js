@@ -77,6 +77,7 @@ const EditingNumberValueKTForm = (props) => {
                       color="secondary"
                       fullWidth
                       name="chars"
+                      inputProps={{ maxLength: 1 }}
                       multiline={2}
                       value={valuesNumber.chars}
                       onChange={onValuesNumberChange}

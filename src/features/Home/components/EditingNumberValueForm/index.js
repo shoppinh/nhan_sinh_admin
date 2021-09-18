@@ -100,6 +100,7 @@ const EditingNumberValueForm = (props) => {
                                 value={item}
                                 onChange={(e) => handleChangeDetail(index)(e)}
                                 required={true}
+                                inputProps={{ maxLength: 1 }}
                               />
                             </Grid>
                             <Grid
