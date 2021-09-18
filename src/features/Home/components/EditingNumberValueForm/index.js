@@ -10,7 +10,7 @@ import {
 import Backdrop from "@material-ui/core/Backdrop";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -28,22 +28,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddingServiceForm = (props) => {
+const EditingNumberValueForm = (props) => {
   const classes = useStyles();
   const {
-    isAddingServiceOpen,
+    isOpen,
     onCloseForm,
-    valuesService,
-    onValuesServiceChange,
-    onAddingServiceSubmit,
+    idNumber,
+    valuesNumber,
+    onEditingNumberSubmit,
     onSuccess,
     onError,
   } = props;
-  const [details, setDetails] = React.useState(valuesService.details);
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onAddingServiceSubmit({ ...valuesService, details });
-  };
+  const [details, setDetails] = React.useState(valuesNumber.chars);
   const addDetailsItem = () => {
     const newDetails = [...details];
     newDetails.push("");
@@ -60,14 +56,20 @@ const AddingServiceForm = (props) => {
     });
     setDetails(newDetails);
   };
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onEditingNumberSubmit(idNumber, { ...valuesNumber, chars: details });
+  };
+  React.useEffect(() => {
+    setDetails(valuesNumber.chars);
+  }, [valuesNumber.chars]);
   return (
     <React.Fragment>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={classes.modal}
-        open={isAddingServiceOpen}
+        open={isOpen}
         onClose={onCloseForm}
         closeAfterTransition
         BackdropComponent={Backdrop}
@@ -75,48 +77,14 @@ const AddingServiceForm = (props) => {
           timeout: 500,
         }}
       >
-        <Fade in={isAddingServiceOpen}>
+        <Fade in={isOpen}>
           <div className={classes.paper}>
             <Container size="sm">
               <Typography variant="h5" style={{ marginBottom: "1rem" }}>
-                Thêm mới dịch vụ
+                Chỉnh sửa con số: <b>{valuesNumber.number}</b>
               </Typography>
 
               <form autoComplete="off" onSubmit={handleSubmit}>
-                <TextField
-                  className={classes.field}
-                  label="Tên dịch vụ"
-                  variant="outlined"
-                  color="secondary"
-                  fullWidth
-                  type="text"
-                  onChange={onValuesServiceChange}
-                  required={true}
-                  name="title"
-                />
-                <TextField
-                  className={classes.field}
-                  label="Giá"
-                  placeholder="VNĐ"
-                  variant="outlined"
-                  color="secondary"
-                  fullWidth
-                  type="number"
-                  onChange={onValuesServiceChange}
-                  required={true}
-                  name="price"
-                />
-                <TextField
-                  className={classes.field}
-                  label="Số lượt tra cứu VIP"
-                  variant="outlined"
-                  color="secondary"
-                  fullWidth
-                  type="number"
-                  onChange={onValuesServiceChange}
-                  required={true}
-                  name="quantity"
-                />
                 {details
                   ? details.map((item, index) => {
                       return (
@@ -125,7 +93,7 @@ const AddingServiceForm = (props) => {
                             <Grid item md={9}>
                               <TextField
                                 className={classes.field}
-                                label="Chi tiết dịch vụ"
+                                label="Chi tiết con số"
                                 variant="outlined"
                                 color="secondary"
                                 fullWidth
@@ -137,7 +105,7 @@ const AddingServiceForm = (props) => {
                             <Grid
                               item
                               md={2}
-                              style={{ width: "100%", marginTop: "5px" }}
+                              style={{ width: "100%", marginTop: "2px" }}
                             >
                               <Button
                                 color="secondary"
@@ -155,14 +123,14 @@ const AddingServiceForm = (props) => {
 
                 <div>
                   <Grid container>
-                    {details.length < 5 ? (
+                    {details?.length < 5 ? (
                       <Grid
                         item
                         container
                         md={12}
                         style={{ marginBottom: "20px" }}
                       >
-                        <Grid item md={5}>
+                        <Grid item md={7}>
                           <Button
                             style={{ float: "right" }}
                             color="primary"
@@ -170,7 +138,7 @@ const AddingServiceForm = (props) => {
                             onClick={addDetailsItem}
                             style={{ marginRight: "20px" }}
                           >
-                            Thêm mô tả
+                            Thêm chữ cái
                           </Button>
                         </Grid>
                       </Grid>
@@ -207,7 +175,7 @@ const AddingServiceForm = (props) => {
                   severity="success"
                   style={{ marginTop: "1rem", justifyContent: "center" }}
                 >
-                  Thêm mới dịch vụ thành công
+                  Sửa con số thành công
                 </Alert>
               )}
               {onError && (
@@ -216,7 +184,7 @@ const AddingServiceForm = (props) => {
                   severity="error"
                   style={{ marginTop: "1rem", justifyContent: "center" }}
                 >
-                  Thêm mới dịch vụ thất bại
+                  Sửa con số thất bại
                 </Alert>
               )}
             </Container>
@@ -227,4 +195,4 @@ const AddingServiceForm = (props) => {
   );
 };
 
-export default AddingServiceForm;
+export default EditingNumberValueForm;

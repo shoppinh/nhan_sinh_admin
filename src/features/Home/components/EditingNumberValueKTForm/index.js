@@ -10,7 +10,8 @@ import {
 import Backdrop from "@material-ui/core/Backdrop";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
-import React from "react";
+import React, { useEffect, useState } from "react";
+
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
@@ -26,28 +27,32 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "1rem",
   },
 }));
-const AddingNumberForm = (props) => {
+
+const EditingNumberValueKTForm = (props) => {
   const classes = useStyles();
   const {
-    isAddingNumberOpen,
+    isOpen,
     onCloseForm,
+    idNumber,
     valuesNumber,
+    onEditingNumberSubmit,
     onValuesNumberChange,
-    onAddingNumberSubmit,
     onSuccess,
     onError,
   } = props;
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAddingNumberSubmit(valuesNumber);
+    onEditingNumberSubmit(idNumber, valuesNumber);
   };
+
   return (
     <React.Fragment>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         className={classes.modal}
-        open={isAddingNumberOpen}
+        open={isOpen}
         onClose={onCloseForm}
         closeAfterTransition
         BackdropComponent={Backdrop}
@@ -55,40 +60,28 @@ const AddingNumberForm = (props) => {
           timeout: 500,
         }}
       >
-        <Fade in={isAddingNumberOpen}>
+        <Fade in={isOpen}>
           <div className={classes.paper}>
             <Container size="sm">
               <Typography variant="h5" style={{ marginBottom: "1rem" }}>
-                Thêm mới con số
+                Chỉnh sửa con số: <b>{valuesNumber.number}</b>
               </Typography>
 
               <form autoComplete="off" onSubmit={handleSubmit}>
-                <TextField
-                  className={classes.field}
-                  label="Con số"
-                  variant="outlined"
-                  color="secondary"
-                  fullWidth
-                  type="number"
-                  onChange={onValuesNumberChange}
-                  required={true}
-                  name="number"
-                />
-                <TextField
-                  className={classes.field}
-                  label="Ý nghĩa"
-                  placeholder="VNĐ"
-                  variant="outlined"
-                  color="secondary"
-                  fullWidth
-                  type="text"
-                  onChange={onValuesNumberChange}
-                  required={true}
-                  name="meaning"
-                />
-
                 <div>
                   <Grid container>
+                    <TextField
+                      className={classes.field}
+                      label="Con số"
+                      variant="outlined"
+                      color="secondary"
+                      fullWidth
+                      name="chars"
+                      multiline={2}
+                      value={valuesNumber.chars}
+                      onChange={onValuesNumberChange}
+                      InputLabelProps={{ shrink: true }}
+                    />
                     <Grid item container md={12}>
                       <Grid item md={5} sm={5} xs={5}>
                         <Button
@@ -119,7 +112,7 @@ const AddingNumberForm = (props) => {
                   severity="success"
                   style={{ marginTop: "1rem", justifyContent: "center" }}
                 >
-                  Thêm mới con số thành công
+                  Sửa con số thành công
                 </Alert>
               )}
               {onError && (
@@ -128,7 +121,7 @@ const AddingNumberForm = (props) => {
                   severity="error"
                   style={{ marginTop: "1rem", justifyContent: "center" }}
                 >
-                  Thêm mới con số thất bại
+                  Sửa con số thất bại
                 </Alert>
               )}
             </Container>
@@ -139,4 +132,4 @@ const AddingNumberForm = (props) => {
   );
 };
 
-export default AddingNumberForm;
+export default EditingNumberValueKTForm;

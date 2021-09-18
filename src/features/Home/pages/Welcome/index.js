@@ -53,7 +53,7 @@ const Welcome = () => {
 
     const fetchEditInformation = () => {
       informationApi
-        .putInformation(id, data)
+        .putInfo(id, data)
         .then(function (response) {
           setSuccess(true);
           setTimeout(() => {
@@ -91,7 +91,7 @@ const Welcome = () => {
   useEffect(() => {
     const fetchListInformation = async () => {
       try {
-        const res = await informationApi.getListInformation();
+        const res = await informationApi.getListInfo();
         setInformationList(res.data);
       } catch (err) {
         console.log("failed to fetch Information list: ", error);
@@ -102,7 +102,7 @@ const Welcome = () => {
   useEffect(() => {
     const fetchInformationByID = async () => {
       try {
-        const res = await informationApi.getInformationByID(clickedEditingId);
+        const res = await informationApi.getInfoByID(clickedEditingId);
         setValuesInformation(res.data);
       } catch (err) {
         console.log("failed to fetch Information list: ", error);
@@ -127,11 +127,11 @@ const Welcome = () => {
             <Card className={classes.root}>
               <CardContent>
                 <Typography variant="h6" component="h2">
-                  Danh mục : {data.Information}
+                  Danh mục : {data.content}
                 </Typography>
 
                 <Typography variant="body2" component="p">
-                  Giá trị: {data.meaning}
+                  Giá trị: {data.quantity}
                 </Typography>
               </CardContent>
               <CardActions>

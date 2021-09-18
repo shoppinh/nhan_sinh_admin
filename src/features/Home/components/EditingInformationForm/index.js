@@ -78,6 +78,7 @@ const EditingInformationForm = (props) => {
                   required={true}
                   name="content"
                   value={valuesInformation.content}
+                  InputLabelProps={{ shrink: true }}
                 />
                 <TextField
                   className={classes.field}
@@ -91,12 +92,13 @@ const EditingInformationForm = (props) => {
                   required={true}
                   name="quantity"
                   value={valuesInformation.quantity}
+                  InputLabelProps={{ shrink: true }}
                 />
 
                 <div>
                   <Grid container>
                     <Grid item container md={12}>
-                      <Grid item md={5}>
+                      <Grid item md={5} sm={5} xs={5}>
                         <Button
                           color="secondary"
                           variant="contained"
@@ -105,7 +107,7 @@ const EditingInformationForm = (props) => {
                           Hủy bỏ
                         </Button>
                       </Grid>
-                      <Grid item md={5}>
+                      <Grid item md={5} sm={5} xs={5}>
                         <Button
                           style={{ float: "right" }}
                           type="submit"

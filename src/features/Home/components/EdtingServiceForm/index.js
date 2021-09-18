@@ -132,7 +132,7 @@ const EditingServiceForm = (props) => {
                       return (
                         <div>
                           <Grid container justifyContent="space-between">
-                            <Grid item md={9}>
+                            <Grid item md={9} sm={10} xs={10}>
                               <TextField
                                 className={classes.field}
                                 label="Chi tiết dịch vụ"
@@ -147,6 +147,8 @@ const EditingServiceForm = (props) => {
                             <Grid
                               item
                               md={2}
+                              sm={1}
+                              xs={1}
                               style={{ width: "100%", marginTop: "2px" }}
                             >
                               <Button
@@ -188,7 +190,7 @@ const EditingServiceForm = (props) => {
                       ""
                     )}
                     <Grid item container md={12}>
-                      <Grid item md={5}>
+                      <Grid item md={5} sm={5} xs={5}>
                         <Button
                           color="secondary"
                           variant="contained"
@@ -197,7 +199,7 @@ const EditingServiceForm = (props) => {
                           Hủy bỏ
                         </Button>
                       </Grid>
-                      <Grid item md={5}>
+                      <Grid item md={5} sm={5} xs={5}>
                         <Button
                           style={{ float: "right" }}
                           type="submit"

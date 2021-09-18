@@ -16,6 +16,9 @@ const EditingNumberForm = React.lazy(() =>
 const ConfirmDeleteNumber = React.lazy(() =>
   import("../../components/ConfirmDeleteNumber")
 );
+const CSKhatTam = React.lazy(() => import("./CSKhatTam"));
+const CSNhanCach = React.lazy(() => import("./CSNhanCach"));
+const CSSoPhan = React.lazy(() => import("./CSSoPhan"));
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -193,105 +196,110 @@ const NumberMeaning = () => {
   }, [clickedEditingId]);
   return (
     <Suspense fallback={<div>Loading</div>}>
-      <Grid
-        container
-        style={{ justifyContent: "space-between", marginBottom: "1rem" }}
-      >
-        <Grid item>
-          <Typography variant="h5">Danh sách con số</Typography>
-        </Grid>
-        {numberList.length < 11 && (
+      <React.Fragment>
+        <Grid
+          container
+          style={{ justifyContent: "space-between", marginBottom: "1rem" }}
+        >
           <Grid item>
-            <Button
-              size="large"
-              variant="contained"
-              color="primary"
-              onClick={handleOpenAddingNumberForm}
-              startIcon={<AddIcon />}
-            >
-              Thêm con số
-            </Button>
+            <Typography variant="h5">Danh sách con số</Typography>
           </Grid>
-        )}
-      </Grid>
-      {/* adding Number component */}
-      <AddingNumberForm
-        isAddingNumberOpen={openAddingNumberForm}
-        onCloseForm={handleCloseAddingNumberForm}
-        onValuesNumberChange={setValuesNumberChange}
-        valuesNumber={valuesNumber}
-        onAddingNumberSubmit={handleAddingSubmit}
-        onSuccess={success}
-        onError={error}
-      />
-      <Grid container spacing={3}>
-        {numberList.map((data) => (
-          <Grid item xs={12} md={6} lg={4} key={data._id}>
-            <Card className={classes.root}>
-              <CardContent>
-                <Typography variant="h6" component="h2">
-                  Con số : {data.number}
-                </Typography>
+          {numberList.length < 11 && (
+            <Grid item>
+              <Button
+                size="large"
+                variant="contained"
+                color="primary"
+                onClick={handleOpenAddingNumberForm}
+                startIcon={<AddIcon />}
+              >
+                Thêm con số
+              </Button>
+            </Grid>
+          )}
+        </Grid>
+        {/* adding Number component */}
+        <AddingNumberForm
+          isAddingNumberOpen={openAddingNumberForm}
+          onCloseForm={handleCloseAddingNumberForm}
+          onValuesNumberChange={setValuesNumberChange}
+          valuesNumber={valuesNumber}
+          onAddingNumberSubmit={handleAddingSubmit}
+          onSuccess={success}
+          onError={error}
+        />
+        <Grid container spacing={3}>
+          {numberList.map((data) => (
+            <Grid item xs={12} md={6} lg={4} key={data._id}>
+              <Card className={classes.root}>
+                <CardContent>
+                  <Typography variant="h6" component="h2">
+                    Con số : {data.number}
+                  </Typography>
 
-                <Typography variant="body2" component="p">
-                  Nội dung: {data.meaning}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button
-                  size="small"
-                  variant="contained"
-                  color="secondary"
-                  onClick={() => {
-                    handleOpenDeleteConfirm(data._id);
-                  }}
-                >
-                  Xóa con số
-                </Button>
-                {clickedDeleteId === data._id ? (
-                  <ConfirmDeleteNumber
-                    isOpenDeleteConfirm={openDeleteConfirm}
-                    onConfirmDeleteClose={handleCloseDeleteConfirm}
-                    onClickConfirmDeleteNumber={(e) => {
-                      handleClickDeleteConfirm(data._id);
+                  <Typography variant="body2" component="p">
+                    Nội dung: {data.meaning}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => {
+                      handleOpenDeleteConfirm(data._id);
                     }}
-                    onSuccess={success}
-                    onError={error}
-                    id={data._id}
-                  />
-                ) : (
-                  ""
-                )}
+                  >
+                    Xóa con số
+                  </Button>
+                  {clickedDeleteId === data._id ? (
+                    <ConfirmDeleteNumber
+                      isOpenDeleteConfirm={openDeleteConfirm}
+                      onConfirmDeleteClose={handleCloseDeleteConfirm}
+                      onClickConfirmDeleteNumber={(e) => {
+                        handleClickDeleteConfirm(data._id);
+                      }}
+                      onSuccess={success}
+                      onError={error}
+                      id={data._id}
+                    />
+                  ) : (
+                    ""
+                  )}
 
-                <Button
-                  size="small"
-                  variant="contained"
-                  color="primary"
-                  onClick={(e) => {
-                    handleOpenEditForm(data._id);
-                  }}
-                >
-                  Chỉnh sửa
-                </Button>
-                {clickedEditingId === data._id ? (
-                  <EditingNumberForm
-                    isOpen={openEditingNumberForm}
-                    onCloseForm={handleCloseEditForm}
-                    idNumber={data._id}
-                    valuesNumber={valuesNumber}
-                    onValuesNumberChange={setValuesNumberChange}
-                    onEditingNumberSubmit={handleEditingSubmit}
-                    onSuccess={success}
-                    onError={error}
-                  />
-                ) : (
-                  ""
-                )}
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    color="primary"
+                    onClick={(e) => {
+                      handleOpenEditForm(data._id);
+                    }}
+                  >
+                    Chỉnh sửa
+                  </Button>
+                  {clickedEditingId === data._id ? (
+                    <EditingNumberForm
+                      isOpen={openEditingNumberForm}
+                      onCloseForm={handleCloseEditForm}
+                      idNumber={data._id}
+                      valuesNumber={valuesNumber}
+                      onValuesNumberChange={setValuesNumberChange}
+                      onEditingNumberSubmit={handleEditingSubmit}
+                      onSuccess={success}
+                      onError={error}
+                    />
+                  ) : (
+                    ""
+                  )}
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </React.Fragment>
+      <CSKhatTam />
+      <CSSoPhan />
+      <CSNhanCach />
     </Suspense>
   );
 };

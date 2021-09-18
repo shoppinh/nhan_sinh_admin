@@ -107,7 +107,7 @@ const EditingBenefitForm = (props) => {
                       return (
                         <div>
                           <Grid container justifyContent="space-between">
-                            <Grid item md={9}>
+                            <Grid item md={9} sm={9} xs={9}>
                               <TextField
                                 className={classes.field}
                                 label="Chi tiết lợi ich"
@@ -118,11 +118,14 @@ const EditingBenefitForm = (props) => {
                                 onChange={(e) => handleChangeDetail(index)(e)}
                                 required={true}
                                 name="details"
+                                multiline={2}
                               />
                             </Grid>
                             <Grid
                               item
                               md={2}
+                              xs={2}
+                              sm={2}
                               style={{ width: "100%", marginTop: "2px" }}
                             >
                               <Button
@@ -164,7 +167,7 @@ const EditingBenefitForm = (props) => {
                       ""
                     )}
                     <Grid item container md={12}>
-                      <Grid item md={5}>
+                      <Grid item md={5} sm={5} xs={5}>
                         <Button
                           color="secondary"
                           variant="contained"
@@ -173,7 +176,7 @@ const EditingBenefitForm = (props) => {
                           Hủy bỏ
                         </Button>
                       </Grid>
-                      <Grid item md={5}>
+                      <Grid item md={5} sm={5} xs={5}>
                         <Button
                           style={{ float: "right" }}
                           type="submit"

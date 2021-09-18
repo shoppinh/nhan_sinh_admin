@@ -24,7 +24,11 @@ import userApi from "../../api/userApi";
 import logoSatsi from "../../assets/images/logo_satsi.png";
 import ListNotify from "../ListNotify";
 import "./Layout.css";
-
+import AccessibilityIcon from "@material-ui/icons/Accessibility";
+import GraphicEqIcon from "@material-ui/icons/GraphicEq";
+import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
+import DoneIcon from "@material-ui/icons/Done";
+import DoneAllIcon from "@material-ui/icons/DoneAll";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => {
@@ -131,27 +135,27 @@ export default function Layout({ children }) {
     },
     {
       text: "Number Meaning",
-      icon: <SubjectOutlined color="primary" />,
+      icon: <AccessibilityIcon color="primary" />,
       path: "/number-meaning",
     },
     {
       text: "Welcome",
-      icon: <SubjectOutlined color="primary" />,
+      icon: <GraphicEqIcon color="primary" />,
       path: "/welcome",
     },
     {
       text: "Payment",
-      icon: <SubjectOutlined color="primary" />,
+      icon: <AccountBalanceIcon color="primary" />,
       path: "/payment",
     },
     {
       text: "SuccessStories",
-      icon: <SubjectOutlined color="primary" />,
+      icon: <DoneIcon color="primary" />,
       path: "/success-stories",
     },
     {
       text: "Benefit",
-      icon: <SubjectOutlined color="primary" />,
+      icon: <DoneAllIcon color="primary" />,
       path: "/benefit",
     },
   ];
