@@ -134,6 +134,11 @@ export default function Layout({ children }) {
       path: "/list-search-free",
     },
     {
+      text: "Banner",
+      icon: <SubjectOutlined color="primary" />,
+      path: "/banner",
+    },
+    {
       text: "Number Meaning",
       icon: <AccessibilityIcon color="primary" />,
       path: "/number-meaning",
