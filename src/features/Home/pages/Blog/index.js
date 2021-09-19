@@ -10,6 +10,10 @@ import CardContent from "@material-ui/core/CardContent";
 import AddIcon from "@material-ui/icons/Add";
 import Pagination from "@material-ui/lab/Pagination";
 import spinner from "../../../../assets/images/Iphone-spinner-2.gif";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
 const ConfirmDeleteBlog = React.lazy(() =>
   import("../../components/ConfirmDeleteBlog")
 );
@@ -34,6 +38,13 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     width: theme.spacing(9),
     height: theme.spacing(9),
+    backgroundPosition: "center",
+    boxShadow: ".25rem .5rem 1rem rgba(0,0,0,.3)",
+    width: "100%",
+    height: "200px",
+  },
+  pagination: {
+    paddingTop: "10px",
   },
 }));
 
@@ -51,6 +62,9 @@ const Blog = () => {
   const [loading, setLoading] = useState(false);
   const handleChange = (event, value) => {
     setPage(value);
+  };
+  const handleChangeBlogPerPage = (value) => {
+    setPerPage(value);
   };
   const handleOpenDeleteConfirm = (id) => {
     setClickedDeleteId(id);
@@ -96,7 +110,7 @@ const Blog = () => {
     };
     fetchListBlog();
     window.scrollTo(0, 0);
-  }, [page]);
+  }, [page, perPage]);
 
   return (
     <Suspense fallback={<div>Loading</div>}>
@@ -133,20 +147,15 @@ const Blog = () => {
                 <Card className={classes.root}>
                   <CardContent>
                     <Grid container justifyContent="space-between">
-                      <Grid item md={3}>
+                      <Grid item md={3} sm={12} xs={12}>
                         <img
                           alt="Remy Sharp"
                           src={data.thumbnail}
-                          style={{
-                            backgroundPosition: "center",
-                            boxShadow: ".25rem .5rem 1rem rgba(0,0,0,.3)",
-                            width: "100%",
-                            height: "200px",
-                          }}
+                          style={{}}
                           className={classes.avatar}
                         />
                       </Grid>
-                      <Grid item md={8}>
+                      <Grid item md={8} sm={12} xs={12}>
                         <Typography variant="h5" gutterBottom component="h2">
                           Tiêu đề : {data.title}
                         </Typography>
@@ -204,15 +213,33 @@ const Blog = () => {
           )}
         </Grid>
       )}
-      <Grid container style={{ marginTop: "20px" }}>
-        <Grid item md={6} sm={12} xs={12}>
+      <Grid container style={{ marginTop: "20px" }} alignItems="center">
+        <Grid item md={5} sm={12} xs={12}>
           <Pagination
-            count={Math.floor(totalPages / perPage)}
+            className={classes.pagination}
+            count={Math.ceil(totalPages / perPage)}
             page={page}
             onChange={handleChange}
             size="large"
             color="primary"
           />
+        </Grid>
+        <Grid item md={2} sm={6} xs={6} style={{ marginTop: "20px" }}>
+          <FormControl fullWidth>
+            <InputLabel id="select-blog-number">Bài viết / trang</InputLabel>
+            <Select
+              labelId="select-blog-number"
+              id="blog-number"
+              value={perPage}
+              label="Chọn số bài viết"
+              onChange={(e) => handleChangeBlogPerPage(e.target.value)}
+            >
+              <MenuItem value={1}>1</MenuItem>
+              <MenuItem value={3}>3</MenuItem>
+              <MenuItem value={5}>5</MenuItem>
+              <MenuItem value={7}>7</MenuItem>
+            </Select>
+          </FormControl>
         </Grid>
       </Grid>
     </Suspense>
