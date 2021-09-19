@@ -10,7 +10,7 @@ import benefitApi from "../../../../api/benefitApi.js";
 import AddingBenefitForm from "../../components/AddingBenefitForm";
 import ConfirmDeleteBenefit from "../../components/ConfirmDeleteBenefit";
 import EditingBenefitForm from "../../components/EditingBenefitForm";
-
+import spinner from "../../../../assets/images/Iphone-spinner-2.gif";
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 275,
@@ -47,18 +47,20 @@ const Benefit = () => {
   const [clickedDeleteId, setClickedDeleteId] = useState("");
 
   const [clickedEditingId, setClickedEditingId] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const [isDataChanged, setIsDataChanged] = useState(false);
 
   // get list Benefit
   useEffect(() => {
     const fetchListBenefit = async () => {
+      setLoading(true);
       try {
         const response = await benefitApi.getListBenefit();
         setListBenefit(response.data);
       } catch (error) {
         console.log("failed to fetch product list: ", error);
       }
+      setLoading(false);
     };
 
     fetchListBenefit();
@@ -231,7 +233,11 @@ const Benefit = () => {
         onSuccess={success}
         onError={error}
       />
-      <div>
+      {loading ? (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <img src={spinner} style={{ height: "100px" }} />
+        </div>
+      ) : (
         <Grid container spacing={3}>
           {listBenefit.map((data) => (
             <Grid item xs={12} md={6} lg={4} key={data._id}>
@@ -304,7 +310,7 @@ const Benefit = () => {
             </Grid>
           ))}
         </Grid>
-      </div>
+      )}
     </React.Fragment>
   );
 };

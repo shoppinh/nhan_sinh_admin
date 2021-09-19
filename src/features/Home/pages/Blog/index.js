@@ -8,6 +8,8 @@ import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import AddIcon from "@material-ui/icons/Add";
+import Pagination from "@material-ui/lab/Pagination";
+import spinner from "../../../../assets/images/Iphone-spinner-2.gif";
 const ConfirmDeleteBlog = React.lazy(() =>
   import("../../components/ConfirmDeleteBlog")
 );
@@ -43,7 +45,13 @@ const Blog = () => {
   const [error, setError] = useState(false);
   const [openDeleteConfirm, setOpenDeleteConfirm] = useState(false);
   const [clickedDeleteId, setClickedDeleteId] = useState("");
-
+  const [page, setPage] = React.useState(1);
+  const [totalPages, setTotalPages] = React.useState(0);
+  const [perPage, setPerPage] = React.useState(3);
+  const [loading, setLoading] = useState(false);
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
   const handleOpenDeleteConfirm = (id) => {
     setClickedDeleteId(id);
     setOpenDeleteConfirm(true);
@@ -74,15 +82,21 @@ const Blog = () => {
   };
   useEffect(() => {
     const fetchListBlog = async () => {
+      setLoading(true);
       try {
-        const res = await blogApi.getListBlog();
+        const res = await blogApi.getBlogPerPage(page, perPage);
+        console.log(res);
         setBlogList(res.data.data);
+        setTotalPages(res.data.length);
       } catch (err) {
         console.log("failed to fetch Blog list: ", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchListBlog();
-  }, [blogList]);
+    window.scrollTo(0, 0);
+  }, [page]);
 
   return (
     <Suspense fallback={<div>Loading</div>}>
@@ -107,82 +121,99 @@ const Blog = () => {
         </Grid>
       </Grid>
 
-      <Grid container spacing={3}>
-        {blogList?.length > 0 ? (
-          blogList.map((data) => (
-            <Grid item xs={12} md={12} key={data._id}>
-              <Card className={classes.root}>
-                <CardContent>
-                  <Grid container justifyContent="space-between">
-                    <Grid item md={3}>
-                      <img
-                        alt="Remy Sharp"
-                        src={data.thumbnail}
-                        style={{
-                          backgroundPosition: "center",
-                          boxShadow: ".25rem .5rem 1rem rgba(0,0,0,.3)",
-                          width: "100%",
-                          height: "200px",
-                        }}
-                        className={classes.avatar}
-                      />
-                    </Grid>
-                    <Grid item md={8}>
-                      <Typography variant="h5" gutterBottom component="h2">
-                        Tiêu đề : {data.title}
-                      </Typography>
+      {loading ? (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <img src={spinner} style={{ height: "100px" }} />
+        </div>
+      ) : (
+        <Grid container spacing={3}>
+          {blogList?.length > 0 ? (
+            blogList.map((data) => (
+              <Grid item xs={12} md={12} key={data._id}>
+                <Card className={classes.root}>
+                  <CardContent>
+                    <Grid container justifyContent="space-between">
+                      <Grid item md={3}>
+                        <img
+                          alt="Remy Sharp"
+                          src={data.thumbnail}
+                          style={{
+                            backgroundPosition: "center",
+                            boxShadow: ".25rem .5rem 1rem rgba(0,0,0,.3)",
+                            width: "100%",
+                            height: "200px",
+                          }}
+                          className={classes.avatar}
+                        />
+                      </Grid>
+                      <Grid item md={8}>
+                        <Typography variant="h5" gutterBottom component="h2">
+                          Tiêu đề : {data.title}
+                        </Typography>
 
-                      <Typography variant="subtitle1" component="p">
-                        Tóm tắt : {data.subTitle}
-                      </Typography>
+                        <Typography variant="subtitle1" component="p">
+                          Tóm tắt : {data.subTitle}
+                        </Typography>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </CardContent>
-                <CardActions style={{ justifyContent: "flex-end" }}>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => {
-                      handleOpenDeleteConfirm(data._id);
-                    }}
-                  >
-                    Xóa bài viết
-                  </Button>
-                  {clickedDeleteId === data._id ? (
-                    <ConfirmDeleteBlog
-                      isOpenDeleteConfirm={openDeleteConfirm}
-                      onConfirmDeleteClose={handleCloseDeleteConfirm}
-                      onClickConfirmDeleteBlog={() => {
-                        handleClickDeleteConfirm(data._id);
+                  </CardContent>
+                  <CardActions style={{ justifyContent: "flex-end" }}>
+                    <Button
+                      size="small"
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => {
+                        handleOpenDeleteConfirm(data._id);
                       }}
-                      onSuccess={success}
-                      onError={error}
-                      id={data._id}
-                    />
-                  ) : (
-                    ""
-                  )}
+                    >
+                      Xóa bài viết
+                    </Button>
+                    {clickedDeleteId === data._id ? (
+                      <ConfirmDeleteBlog
+                        isOpenDeleteConfirm={openDeleteConfirm}
+                        onConfirmDeleteClose={handleCloseDeleteConfirm}
+                        onClickConfirmDeleteBlog={() => {
+                          handleClickDeleteConfirm(data._id);
+                        }}
+                        onSuccess={success}
+                        onError={error}
+                        id={data._id}
+                      />
+                    ) : (
+                      ""
+                    )}
 
-                  <Button
-                    size="small"
-                    variant="contained"
-                    color="primary"
-                    onClick={(e) => {
-                      history.push(`/blog/editing-blog/${data._id}`);
-                    }}
-                  >
-                    Chỉnh sửa
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))
-        ) : (
-          <Alert severity="success" color="info">
-            Chưa có dữ liệu
-          </Alert>
-        )}
+                    <Button
+                      size="small"
+                      variant="contained"
+                      color="primary"
+                      onClick={(e) => {
+                        history.push(`/blog/editing-blog/${data._id}`);
+                      }}
+                    >
+                      Chỉnh sửa
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))
+          ) : (
+            <Alert severity="success" color="info">
+              Chưa có dữ liệu
+            </Alert>
+          )}
+        </Grid>
+      )}
+      <Grid container style={{ marginTop: "20px" }}>
+        <Grid item md={6} sm={12} xs={12}>
+          <Pagination
+            count={Math.floor(totalPages / perPage)}
+            page={page}
+            onChange={handleChange}
+            size="large"
+            color="primary"
+          />
+        </Grid>
       </Grid>
     </Suspense>
   );

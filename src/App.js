@@ -2,6 +2,7 @@ import { ThemeProvider } from "@material-ui/core";
 import { purple } from "@material-ui/core/colors";
 import React, { Suspense } from "react";
 import { createTheme } from "@material-ui/core/styles";
+import spinner from "./assets/images/Iphone-spinner-2.gif";
 import {
   BrowserRouter as Router,
   Route,
@@ -65,7 +66,13 @@ function App() {
 
   // -> la 1 useEffect de lang nghe xem nguoi dung da dang nhap hay chua
   return (
-    <Suspense fallback={<div>Loading ...</div>}>
+    <Suspense
+      fallback={
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <img src={spinner} style={{ height: "100px" }} />
+        </div>
+      }
+    >
       <ThemeProvider theme={theme}>
         <Router>
           <Switch>

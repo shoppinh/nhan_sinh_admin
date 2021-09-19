@@ -10,6 +10,7 @@ import React, { useEffect, useState, Suspense } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Alert from "@material-ui/lab/Alert";
 
+import spinner from "../../../../assets/images/Iphone-spinner-2.gif";
 import storiesApi from "../../../../api/storiesApi";
 const AddingStoriesForm = React.lazy(() =>
   import("../../components/AddingStoriesForm")
@@ -60,7 +61,7 @@ const SuccessStories = () => {
   const [error, setError] = useState(false);
   const [openDeleteConfirm, setOpenDeleteConfirm] = useState(false);
   const [isDataChanged, setIsDataChanged] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const [clickedDeleteId, setClickedDeleteId] = useState("");
 
   const [clickedEditingId, setClickedEditingId] = useState("");
@@ -189,12 +190,14 @@ const SuccessStories = () => {
 
   useEffect(() => {
     const fetchListStories = async () => {
+      setLoading(true);
       try {
         const res = await storiesApi.getListStories();
         setStoriesList(res.data);
       } catch (err) {
         console.log("failed to fetch Stories list: ", error);
       }
+      setLoading(false);
     };
     fetchListStories();
   }, [isDataChanged]);
@@ -241,100 +244,106 @@ const SuccessStories = () => {
         onSuccess={success}
         onError={error}
       />
-      <Grid container spacing={3}>
-        {storiesList?.length > 0 ? (
-          storiesList.map((data) => (
-            <Grid item xs={12} md={6} lg={4} key={data._id}>
-              <Card className={classes.root}>
-                <CardHeader
-                  avatar={
-                    <Avatar
-                      alt="Remy Sharp"
-                      src={data.avatar}
-                      style={{
-                        backgroundPosition: "center",
-                        boxShadow: ".25rem .5rem 1rem rgba(0,0,0,.3)",
-                      }}
-                      className={classes.avatar}
-                    />
-                  }
-                  title={
+      {loading ? (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <img src={spinner} style={{ height: "100px" }} />
+        </div>
+      ) : (
+        <Grid container spacing={3}>
+          {storiesList?.length > 0 ? (
+            storiesList.map((data) => (
+              <Grid item xs={12} md={6} lg={4} key={data._id}>
+                <Card className={classes.root}>
+                  <CardHeader
+                    avatar={
+                      <Avatar
+                        alt="Remy Sharp"
+                        src={data.avatar}
+                        style={{
+                          backgroundPosition: "center",
+                          boxShadow: ".25rem .5rem 1rem rgba(0,0,0,.3)",
+                        }}
+                        className={classes.avatar}
+                      />
+                    }
+                    title={
+                      <Typography variant="h6" component="h2">
+                        Tiêu đề : {data.title}
+                      </Typography>
+                    }
+                  />
+                  <CardContent>
                     <Typography variant="h6" component="h2">
-                      Tiêu đề : {data.title}
+                      Tên : {data.name}
                     </Typography>
-                  }
-                />
-                <CardContent>
-                  <Typography variant="h6" component="h2">
-                    Tên : {data.name}
-                  </Typography>
-                  <Typography variant="h6" component="h2">
-                    Nghề nghiệp : {data.career}
-                  </Typography>
-                  <Typography variant="body2" component="p">
-                    Nội dung : {data.content}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    size="small"
-                    variant="contained"
-                    color="secondary"
-                    onClick={() => {
-                      handleOpenDeleteConfirm(data._id);
-                    }}
-                  >
-                    Xóa câu truyện
-                  </Button>
-                  {clickedDeleteId === data._id ? (
-                    <ConfirmDeleteStories
-                      isOpenDeleteConfirm={openDeleteConfirm}
-                      onConfirmDeleteClose={handleCloseDeleteConfirm}
-                      onClickConfirmDeleteStories={(e) => {
-                        handleClickDeleteConfirm(data._id);
+                    <Typography variant="h6" component="h2">
+                      Nghề nghiệp : {data.career}
+                    </Typography>
+                    <Typography variant="body2" component="p">
+                      Nội dung : {data.content}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Button
+                      size="small"
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => {
+                        handleOpenDeleteConfirm(data._id);
                       }}
-                      onSuccess={success}
-                      onError={error}
-                      id={data._id}
-                    />
-                  ) : (
-                    ""
-                  )}
+                    >
+                      Xóa câu truyện
+                    </Button>
+                    {clickedDeleteId === data._id ? (
+                      <ConfirmDeleteStories
+                        isOpenDeleteConfirm={openDeleteConfirm}
+                        onConfirmDeleteClose={handleCloseDeleteConfirm}
+                        onClickConfirmDeleteStories={(e) => {
+                          handleClickDeleteConfirm(data._id);
+                        }}
+                        onSuccess={success}
+                        onError={error}
+                        id={data._id}
+                      />
+                    ) : (
+                      ""
+                    )}
 
-                  <Button
-                    size="small"
-                    variant="contained"
-                    color="primary"
-                    onClick={(e) => {
-                      handleOpenEditForm(data._id);
-                    }}
-                  >
-                    Chỉnh sửa
-                  </Button>
-                  {clickedEditingId === data._id ? (
-                    <EditingStoriesForm
-                      isOpen={openEditingStoriesForm}
-                      onCloseForm={handleCloseEditForm}
-                      idStories={data._id}
-                      valuesStories={valuesStories}
-                      onValuesStoriesChange={setValuesStoriesChange}
-                      onEditingStoriesSubmit={handleEditingSubmit}
-                      onSuccess={success}
-                      onError={error}
-                    />
-                  ) : (
-                    ""
-                  )}
-                </CardActions>
-              </Card>
-            </Grid>
-          ))
-        ) : (
-          <Alert severity="success" color="info">
-            Chưa có dữ liệu
-          </Alert>
-        )}
-      </Grid>
+                    <Button
+                      size="small"
+                      variant="contained"
+                      color="primary"
+                      onClick={(e) => {
+                        handleOpenEditForm(data._id);
+                      }}
+                    >
+                      Chỉnh sửa
+                    </Button>
+                    {clickedEditingId === data._id ? (
+                      <EditingStoriesForm
+                        isOpen={openEditingStoriesForm}
+                        onCloseForm={handleCloseEditForm}
+                        idStories={data._id}
+                        valuesStories={valuesStories}
+                        onValuesStoriesChange={setValuesStoriesChange}
+                        onEditingStoriesSubmit={handleEditingSubmit}
+                        onSuccess={success}
+                        onError={error}
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))
+          ) : (
+            <Alert severity="success" color="info">
+              Chưa có dữ liệu
+            </Alert>
+          )}
+        </Grid>
+      )}
     </Suspense>
   );
 };

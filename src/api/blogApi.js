@@ -1,8 +1,8 @@
 import axiosAdmin from "./axiosAdmin";
 
 const blogApi = {
-  getListBlog: () => {
-    const url = "/api/admin/blog";
+  getBlogPerPage: (page, perPage) => {
+    const url = `/api/admin/blog?page=${page}&&perPage=${perPage}`;
     return axiosAdmin.get(url);
   },
   postBlog: (params) => {

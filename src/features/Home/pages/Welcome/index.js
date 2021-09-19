@@ -10,6 +10,7 @@ import informationApi from "../../../../api/informationApi";
 const EditingInformationForm = React.lazy(() =>
   import("../../components/EditingInformationForm")
 );
+import spinner from "../../../../assets/images/Iphone-spinner-2.gif";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,7 +42,7 @@ const Welcome = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [isDataChanged, setIsDataChanged] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const [clickedEditingId, setClickedEditingId] = useState("");
 
   // handle editing existing Information
@@ -90,12 +91,14 @@ const Welcome = () => {
 
   useEffect(() => {
     const fetchListInformation = async () => {
+      setLoading(true);
       try {
         const res = await informationApi.getListInfo();
         setInformationList(res.data);
       } catch (err) {
         console.log("failed to fetch Information list: ", error);
       }
+      setLoading(false);
     };
     fetchListInformation();
   }, [isDataChanged]);
@@ -120,50 +123,55 @@ const Welcome = () => {
           <Typography variant="h5">Số liệu thống kê</Typography>
         </Grid>
       </Grid>
+      {loading ? (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <img src={spinner} style={{ height: "100px" }} />
+        </div>
+      ) : (
+        <Grid container spacing={3}>
+          {informationList.map((data) => (
+            <Grid item xs={12} md={6} lg={4} key={data._id}>
+              <Card className={classes.root}>
+                <CardContent>
+                  <Typography variant="h6" component="h2">
+                    Danh mục : {data.content}
+                  </Typography>
 
-      <Grid container spacing={3}>
-        {informationList.map((data) => (
-          <Grid item xs={12} md={6} lg={4} key={data._id}>
-            <Card className={classes.root}>
-              <CardContent>
-                <Typography variant="h6" component="h2">
-                  Danh mục : {data.content}
-                </Typography>
-
-                <Typography variant="body2" component="p">
-                  Giá trị: {data.quantity}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button
-                  size="small"
-                  variant="contained"
-                  color="primary"
-                  onClick={(e) => {
-                    handleOpenEditForm(data._id);
-                  }}
-                >
-                  Chỉnh sửa
-                </Button>
-                {clickedEditingId === data._id ? (
-                  <EditingInformationForm
-                    isOpen={openEditingInformationForm}
-                    onCloseForm={handleCloseEditForm}
-                    idInformation={data._id}
-                    valuesInformation={valuesInformation}
-                    onValuesInformationChange={setValuesInformationChange}
-                    onEditingInformationSubmit={handleEditingSubmit}
-                    onSuccess={success}
-                    onError={error}
-                  />
-                ) : (
-                  ""
-                )}
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+                  <Typography variant="body2" component="p">
+                    Giá trị: {data.quantity}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    color="primary"
+                    onClick={(e) => {
+                      handleOpenEditForm(data._id);
+                    }}
+                  >
+                    Chỉnh sửa
+                  </Button>
+                  {clickedEditingId === data._id ? (
+                    <EditingInformationForm
+                      isOpen={openEditingInformationForm}
+                      onCloseForm={handleCloseEditForm}
+                      idInformation={data._id}
+                      valuesInformation={valuesInformation}
+                      onValuesInformationChange={setValuesInformationChange}
+                      onEditingInformationSubmit={handleEditingSubmit}
+                      onSuccess={success}
+                      onError={error}
+                    />
+                  ) : (
+                    ""
+                  )}
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </Suspense>
   );
 };
