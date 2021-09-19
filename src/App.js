@@ -33,6 +33,13 @@ const SuccessStories = React.lazy(() =>
 );
 const Welcome = React.lazy(() => import("./features/Home/pages/Welcome"));
 const Banner = React.lazy(() => import("./features/Home/pages/Banner/Banner"));
+const Blog = React.lazy(() => import("./features/Home/pages/Blog"));
+const AddingBlog = React.lazy(() =>
+  import("./features/Home/pages/Blog/AddingBlog")
+);
+const EditingBlog = React.lazy(() =>
+  import("./features/Home/pages/Blog/EditingBlog")
+);
 
 const theme = createTheme({
   palette: {
@@ -92,6 +99,17 @@ function App() {
               />
               <PrivateRoute exact path="/welcome" component={Welcome} />
               <PrivateRoute exact path="/banner" component={Banner} />
+              <PrivateRoute exact path="/blog" component={Blog} />
+              <PrivateRoute
+                exact
+                path="/blog/adding-blog"
+                component={AddingBlog}
+              />
+              <PrivateRoute
+                exact
+                path="/blog/editing-blog/:blogID"
+                component={EditingBlog}
+              />
             </Layout>
             {/* <PrivateRoute path='*' component={NotFound} /> */}
             <Redirect from="/" to="/sign-in" />

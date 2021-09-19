@@ -29,6 +29,7 @@ import GraphicEqIcon from "@material-ui/icons/GraphicEq";
 import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
 import DoneIcon from "@material-ui/icons/Done";
 import DoneAllIcon from "@material-ui/icons/DoneAll";
+import BookIcon from "@material-ui/icons/Book";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => {
@@ -162,6 +163,11 @@ export default function Layout({ children }) {
       text: "Benefit",
       icon: <DoneAllIcon color="primary" />,
       path: "/benefit",
+    },
+    {
+      text: "Blog",
+      icon: <BookIcon color="primary" />,
+      path: "/blog",
     },
   ];
   const handleLogout = () => {
