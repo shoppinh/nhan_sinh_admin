@@ -114,7 +114,7 @@ const CSNhanCach = () => {
           }}
         >
           <Grid item>
-            <Typography variant="h5">Danh sách con số nhân cách</Typography>
+            <Typography variant="h5">Danh sách bảng chỉ số phụ âm</Typography>
           </Grid>
         </Grid>
 

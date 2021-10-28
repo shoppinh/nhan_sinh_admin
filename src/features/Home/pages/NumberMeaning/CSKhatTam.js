@@ -90,6 +90,7 @@ const CSKhatTam = () => {
     const fetchListNumber = async () => {
       try {
         const res = await numberValueApi.getListNumberKT();
+        console.log(res);
         setNumberList(res.data);
       } catch (err) {
         console.log("failed to fetch number list: ", error);
@@ -120,7 +121,7 @@ const CSKhatTam = () => {
           }}
         >
           <Grid item>
-            <Typography variant="h5">Danh sách con số khát tâm</Typography>
+            <Typography variant="h5">Danh sách con số nguyên âm</Typography>
           </Grid>
         </Grid>
 
@@ -134,7 +135,7 @@ const CSKhatTam = () => {
                   </Typography>
 
                   <Typography variant="body2" component="p">
-                    Chữ cái: {data.chars}
+                    Chữ cái: {data.char}
                   </Typography>
                 </CardContent>
                 <CardActions>

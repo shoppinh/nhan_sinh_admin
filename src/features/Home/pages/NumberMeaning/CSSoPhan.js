@@ -114,7 +114,7 @@ const CSSoPhan = () => {
           }}
         >
           <Grid item>
-            <Typography variant="h5">Danh sách con số số phận</Typography>
+            <Typography variant="h5">Danh sách chỉ số full</Typography>
           </Grid>
         </Grid>
 

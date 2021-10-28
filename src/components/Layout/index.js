@@ -164,11 +164,6 @@ export default function Layout({ children }) {
       icon: <DoneAllIcon color="primary" />,
       path: "/benefit",
     },
-    {
-      text: "Blog",
-      icon: <BookIcon color="primary" />,
-      path: "/blog",
-    },
   ];
   const handleLogout = () => {
     localStorage.removeItem("token");
